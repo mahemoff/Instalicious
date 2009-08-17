@@ -1,0 +1,8 @@
+v0.2
+* Updates Delicious bookmark after push, replaces "toread" tag with another tag so it won't be pushed again.
+* Removed dependency on Python Delicious library. (since the Delicious update meant I had to 
+do it manually anyway.)
+* Added dependency on simplejson, if using Python < 2.6.
+
+v0.1
+* Basic functionality: Push "toread" from delicious to instapaper
