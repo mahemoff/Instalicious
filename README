@@ -1,0 +1,3 @@
+Instalicious is a mashup of Instapaper (http://instapaper.com) and Delicious (http://delicious.com), allowing you to push your Delicious "toread" bookmarks to Instapaper for offline reading. It's a single Python script which you probably want to run from a periodic cronjob.
+
+More info at http://softwareas.com/tags/instalicious .

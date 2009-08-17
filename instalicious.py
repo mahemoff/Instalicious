@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 #
-# requires http://www.michael-noll.com/wiki/Del.icio.us_Python_API
-# ("easy_install DeliciousAPI")
-#
+# Instalicious - push Delicious bookmarks to Instapaper.
+ 
 # To run periodically - "crontab -e", then add the line:
 # 30 * * * * /path/to/instalicious.py > /dev/null
 #
-# Copyright (c) 2009 Michael Mahemoff
-# Released under MIT open source License - see
-# http://www.opensource.org/licenses/mit-license.php
+# If you're using Python < 2.6 ("python --version"), you will need to install
+# simplejson (e.g. "easy_install simplejson")
+#
+# Copyright (c) 2009 Michael Mahemoff Released under MIT open source License -
+# see http://www.opensource.org/licenses/mit-license.php
 
 ##############################################################################
 # Config
@@ -27,7 +28,12 @@ instapaper_password='hard2guess'
 # No need to change anything below here
 ##############################################################################
 
-import httplib, urllib, urllib2, deliciousapi, simplejson as json, sys
+import httplib, urllib, urllib2, deliciousapi, sys
+try:
+  import simplejson as json # version < 2.6
+except ImportError:
+  import json
+
 reload(sys)
 sys.setdefaultencoding('utf_8')
 
@@ -55,6 +61,7 @@ def untag_from_delicious(bookmark, toread_tag, instaliciousd_tag, delicious_user
   altered_tag_index = bookmark["t"].index(toread_tag)
   bookmark["t"][altered_tag_index] = instaliciousd_tag
   add_url = "https://api.del.icio.us/v1/posts/add?url=%s&description=%s&extended=%s&tags=%s&replace=yes" % (urllib2.quote(bookmark["u"]), urllib2.quote(bookmark["d"]), urllib2.quote(bookmark["n"]), "+".join(bookmark["t"]))
+  _auth_call(add_url, delicious_username, delicious_password)
 
 def _auth_call(url, auth_username, auth_password):
   passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
