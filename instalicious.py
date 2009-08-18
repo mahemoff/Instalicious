@@ -28,7 +28,7 @@ instapaper_password='hard2guess'
 # No need to change anything below here
 ##############################################################################
 
-import httplib, urllib, urllib2, deliciousapi, sys
+import httplib, urllib, urllib2, sys
 try:
   import simplejson as json # version < 2.6
 except ImportError:
