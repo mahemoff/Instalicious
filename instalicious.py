@@ -62,13 +62,13 @@ def add_to_instapaper(url, instapaper_username, instapaper_password):
   print url, response.status, response.reason
 
 def untag_from_delicious(bookmark, toread_tag, instaliciousd_tag, delicious_username, delicious_password):
-  altered_tag_index = bookmark["t"].index(urllib2.quote(toread_tag))
+  altered_tag_index = bookmark["t"].index(urllib.quote(toread_tag))
   bookmark["t"][altered_tag_index] = instaliciousd_tag
   for key in ["u","d","n"]:
     if isinstance(bookmark[key], unicode):
       bookmark[key] = bookmark[key].encode('utf-8')
   # print "4" + bookmark["t"]
-  add_url = "https://api.del.icio.us/v1/posts/add?url=%s&description=%s&extended=%s&tags=%s&replace=yes" % (urllib2.quote(bookmark["u"]), urllib2.quote(bookmark["d"]), urllib2.quote(bookmark["n"]), "+".join(bookmark["t"]))
+  add_url = "https://api.del.icio.us/v1/posts/add?url=%s&description=%s&extended=%s&tags=%s&replace=yes" % (urllib.quote(bookmark["u"]), urllib.quote(bookmark["d"]), urllib.quote(bookmark["n"]), "+".join(bookmark["t"]))
   _auth_call(add_url, delicious_username, delicious_password)
 
 def _auth_call(url, auth_username, auth_password):
