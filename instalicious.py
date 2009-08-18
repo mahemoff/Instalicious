@@ -10,6 +10,9 @@
 #
 # Copyright (c) 2009 Michael Mahemoff Released under MIT open source License -
 # see http://www.opensource.org/licenses/mit-license.php
+#
+# There are problems here due to unicode encoding - see
+# http://psf.upfronthosting.co.za/roundup/tracker/issue1712522
 
 ##############################################################################
 # Config
@@ -40,6 +43,7 @@ sys.setdefaultencoding('utf_8')
 def download_delicious_bookmarks(delicious_username, toread_tag):
   bookmarks_url = "http://feeds.delicious.com/v2/json/" + delicious_username + "/" + toread_tag
   bookmarks_json = urllib2.urlopen(bookmarks_url).read()
+  print bookmarks_json
   return json.loads(bookmarks_json)
 
 def add_to_instapaper(url, instapaper_username, instapaper_password):
@@ -58,8 +62,13 @@ def add_to_instapaper(url, instapaper_username, instapaper_password):
   print url, response.status, response.reason
 
 def untag_from_delicious(bookmark, toread_tag, instaliciousd_tag, delicious_username, delicious_password):
-  altered_tag_index = bookmark["t"].index(toread_tag)
+  print toread_tag
+  altered_tag_index = bookmark["t"].index(urllib2.quote(toread_tag))
   bookmark["t"][altered_tag_index] = instaliciousd_tag
+  for key in ["u","d","n"]:
+    if isinstance(bookmark[key], unicode):
+      bookmark[key] = bookmark[key].encode('utf-8')
+  # print "4" + bookmark["t"]
   add_url = "https://api.del.icio.us/v1/posts/add?url=%s&description=%s&extended=%s&tags=%s&replace=yes" % (urllib2.quote(bookmark["u"]), urllib2.quote(bookmark["d"]), urllib2.quote(bookmark["n"]), "+".join(bookmark["t"]))
   _auth_call(add_url, delicious_username, delicious_password)
 
