@@ -62,7 +62,6 @@ def add_to_instapaper(url, instapaper_username, instapaper_password):
   print url, response.status, response.reason
 
 def untag_from_delicious(bookmark, toread_tag, instaliciousd_tag, delicious_username, delicious_password):
-  print toread_tag
   altered_tag_index = bookmark["t"].index(urllib2.quote(toread_tag))
   bookmark["t"][altered_tag_index] = instaliciousd_tag
   for key in ["u","d","n"]:
